@@ -1,5 +1,7 @@
 package service;
 
+import common.exception.BusinessException;
+import common.exception.ErrorCode;
 import domain.user.User;
 import dto.user.CreateUserRequest;
 import dto.user.UserResponse;
@@ -26,7 +28,6 @@ public class UserService {
                 .build();
 
         User savedUser = userRepository.save(user);
-
         return UserResponse.from(savedUser);
     }
 
@@ -37,12 +38,12 @@ public class UserService {
 
     public User findUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. id=" + userId));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
     }
 
     private void validateDuplicateEmail(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다. email=" + email);
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
         }
     }
 }

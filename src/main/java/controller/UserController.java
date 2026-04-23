@@ -1,5 +1,6 @@
 package controller;
 
+import common.response.ApiResponse;
 import dto.user.CreateUserRequest;
 import dto.user.UserResponse;
 import jakarta.validation.Valid;
@@ -17,16 +18,20 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(
+    public ResponseEntity<ApiResponse<UserResponse>> createUser(
             @Valid @RequestBody CreateUserRequest request
     ) {
         UserResponse response = userService.createUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ApiResponse.success(response, "사용자 생성이 완료되었습니다."));
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<UserResponse>> getUser(
+            @PathVariable Long userId
+    ) {
         UserResponse response = userService.getUser(userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 }
