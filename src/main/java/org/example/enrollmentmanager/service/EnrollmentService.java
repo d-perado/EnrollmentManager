@@ -10,6 +10,8 @@ import org.example.enrollmentmanager.dto.enrollment.CreateEnrollmentRequest;
 import org.example.enrollmentmanager.dto.enrollment.EnrollmentResponse;
 import org.example.enrollmentmanager.repository.EnrollmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,13 +40,12 @@ public class EnrollmentService {
         return EnrollmentResponse.from(savedEnrollment);
     }
 
-    public List<EnrollmentResponse> getMyEnrollments(Long userId) {
+    public Page<EnrollmentResponse> getMyEnrollments(Long userId, Pageable pageable) {
         userService.findUserById(userId);
 
-        return enrollmentRepository.findAllByUserId(userId)
-                .stream()
-                .map(EnrollmentResponse::from)
-                .toList();
+        Page<Enrollment> enrollments = enrollmentRepository.findAllByUserId(userId, pageable);
+
+        return enrollments.map(EnrollmentResponse::from);
     }
 
     @Transactional

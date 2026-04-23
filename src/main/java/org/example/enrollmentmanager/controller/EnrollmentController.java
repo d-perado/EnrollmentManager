@@ -6,6 +6,8 @@ import org.example.enrollmentmanager.dto.enrollment.EnrollmentResponse;
 import org.example.enrollmentmanager.service.EnrollmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +31,12 @@ public class EnrollmentController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<List<EnrollmentResponse>>> getMyEnrollments(
-            @RequestParam Long userId
+    public ResponseEntity<ApiResponse<Page<EnrollmentResponse>>> getMyEnrollments(
+            @RequestParam Long userId,
+            Pageable pageable
     ) {
-        List<EnrollmentResponse> response = enrollmentService.getMyEnrollments(userId);
+        Page<EnrollmentResponse> response = enrollmentService.getMyEnrollments(userId, pageable);
+
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
