@@ -35,4 +35,14 @@ public class EnrollmentController {
         List<EnrollmentResponse> response = enrollmentService.getMyEnrollments(userId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
+
+    @PatchMapping("/{enrollmentId}/confirm")
+    public ResponseEntity<ApiResponse<EnrollmentResponse>> confirmEnrollment(
+            @PathVariable Long enrollmentId
+    ) {
+        EnrollmentResponse response = enrollmentService.confirmEnrollment(enrollmentId);
+        return ResponseEntity.ok(
+                ApiResponse.success(response, "결제가 확정되어 수강 신청이 완료되었습니다.")
+        );
+    }
 }

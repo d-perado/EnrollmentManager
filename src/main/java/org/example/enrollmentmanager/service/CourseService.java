@@ -75,6 +75,11 @@ public class CourseService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.COURSE_NOT_FOUND));
     }
 
+    public Course findCourseByIdWithLock(Long courseId) {
+        return courseRepository.findWithLockById(courseId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.COURSE_NOT_FOUND));
+    }
+
     private void validateInstructor(User user) {
         if (user.getRole() != UserRole.INSTRUCTOR) {
             throw new BusinessException(ErrorCode.INVALID_USER_ROLE, "강사만 강의를 생성할 수 있습니다.");

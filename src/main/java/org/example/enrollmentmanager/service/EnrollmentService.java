@@ -47,6 +47,24 @@ public class EnrollmentService {
                 .toList();
     }
 
+    @Transactional
+    public EnrollmentResponse confirmEnrollment(Long enrollmentId) {
+        Enrollment enrollment = findEnrollmentById(enrollmentId);
+
+        Course course = courseService.findCourseByIdWithLock(
+                enrollment.getCourse().getId()
+        );
+
+        if (course.isFull()) {
+            throw new BusinessException(ErrorCode.COURSE_CAPACITY_EXCEEDED);
+        }
+
+        enrollment.confirm();
+        course.increaseConfirmedCount();
+
+        return EnrollmentResponse.from(enrollment);
+    }
+
     public Enrollment findEnrollmentById(Long enrollmentId) {
         return enrollmentRepository.findById(enrollmentId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENROLLMENT_NOT_FOUND));
