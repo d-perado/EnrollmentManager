@@ -1,5 +1,7 @@
 package org.example.enrollmentmanager.domain.enrollment;
 
+import org.example.enrollmentmanager.common.exception.BusinessException;
+import org.example.enrollmentmanager.common.exception.ErrorCode;
 import org.example.enrollmentmanager.domain.course.Course;
 import org.example.enrollmentmanager.domain.user.User;
 import jakarta.persistence.*;
@@ -52,11 +54,11 @@ public class Enrollment {
 
     public void confirm() {
         if (this.status != EnrollmentStatus.PENDING) {
-            throw new IllegalStateException("PENDING 상태에서만 확정 가능합니다.");
+            throw new BusinessException(ErrorCode.INVALID_ENROLLMENT_STATUS);
         }
 
         if (isPendingExpired()) {
-            throw new IllegalStateException("결제 가능 시간이 만료되었습니다.");
+            throw new BusinessException(ErrorCode.ENROLLMENT_PENDING_EXPIRED);
         }
 
         this.status = EnrollmentStatus.CONFIRMED;
@@ -65,7 +67,7 @@ public class Enrollment {
 
     public void cancel() {
         if (!isCancelable()) {
-            throw new IllegalStateException("취소할 수 없는 상태입니다.");
+            throw new BusinessException(ErrorCode.ENROLLMENT_NOT_CANCELABLE);
         }
 
         this.status = EnrollmentStatus.CANCELLED;

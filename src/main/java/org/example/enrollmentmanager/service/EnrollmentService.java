@@ -65,6 +65,20 @@ public class EnrollmentService {
         return EnrollmentResponse.from(enrollment);
     }
 
+    @Transactional
+    public EnrollmentResponse cancelEnrollment(Long enrollmentId) {
+        Enrollment enrollment = findEnrollmentById(enrollmentId);
+
+        Course course = courseService.findCourseByIdWithLock(
+                enrollment.getCourse().getId()
+        );
+
+        enrollment.cancel();
+        course.decreaseConfirmedCount();
+
+        return EnrollmentResponse.from(enrollment);
+    }
+
     public Enrollment findEnrollmentById(Long enrollmentId) {
         return enrollmentRepository.findById(enrollmentId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENROLLMENT_NOT_FOUND));

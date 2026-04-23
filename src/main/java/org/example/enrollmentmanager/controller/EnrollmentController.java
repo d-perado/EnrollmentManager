@@ -45,4 +45,14 @@ public class EnrollmentController {
                 ApiResponse.success(response, "결제가 확정되어 수강 신청이 완료되었습니다.")
         );
     }
+
+    @PatchMapping("/{enrollmentId}/cancel")
+    public ResponseEntity<ApiResponse<EnrollmentResponse>> cancelEnrollment(
+            @PathVariable Long enrollmentId
+    ) {
+        EnrollmentResponse response = enrollmentService.cancelEnrollment(enrollmentId);
+        return ResponseEntity.ok(
+                ApiResponse.success(response, "수강 신청이 취소되었습니다.")
+        );
+    }
 }
