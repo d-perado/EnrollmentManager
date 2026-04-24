@@ -3,6 +3,7 @@ package org.example.enrollmentmanager.service;
 import org.example.enrollmentmanager.common.exception.BusinessException;
 import org.example.enrollmentmanager.common.exception.ErrorCode;
 import org.example.enrollmentmanager.domain.course.Course;
+import org.example.enrollmentmanager.domain.enrollment.Enrollment;
 import org.example.enrollmentmanager.domain.enrollment.EnrollmentStatus;
 import org.example.enrollmentmanager.domain.user.User;
 import org.example.enrollmentmanager.domain.user.UserRole;
