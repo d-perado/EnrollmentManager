@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Schema(description = "강의 생성 요청 DTO")
 public record CreateCourseRequest(
 
-        @Schema(description = "강사 회원 ID", example = "10")
+        @Schema(description = "강사 회원 ID", example = "1")
         @NotNull(message = "강사 ID는 필수입니다.")
         Long instructorId,
 

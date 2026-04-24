@@ -16,7 +16,7 @@ public record UserResponse(
         @Schema(description = "이름", example = "홍길동")
         String name,
 
-        @Schema(description = "회원 역할", example = "STUDENT")
+        @Schema(description = "회원 역할", example = "INSTRUCTOR")
         UserRole role
 
 ) {

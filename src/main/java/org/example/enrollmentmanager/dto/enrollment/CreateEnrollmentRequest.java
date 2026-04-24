@@ -10,7 +10,7 @@ public record CreateEnrollmentRequest(
         @NotNull(message = "사용자 ID는 필수입니다.")
         Long userId,
 
-        @Schema(description = "강의 ID", example = "3")
+        @Schema(description = "강의 ID", example = "1")
         @NotNull(message = "강의 ID는 필수입니다.")
         Long courseId
 

@@ -15,7 +15,7 @@ public record EnrollmentResponse(
         @Schema(description = "사용자 회원 ID", example = "1")
         Long userId,
 
-        @Schema(description = "강의 ID", example = "3")
+        @Schema(description = "강의 ID", example = "1")
         Long courseId,
 
         @Schema(description = "수강 상태", example = "WAITLIST")

@@ -12,7 +12,7 @@ public record CourseResponse(
         @Schema(description = "강의 ID", example = "1")
         Long id,
 
-        @Schema(description = "강사 회원 ID", example = "10")
+        @Schema(description = "강사 회원 ID", example = "1")
         Long instructorId,
 
         @Schema(description = "강의명", example = "Spring Boot 실전 입문")

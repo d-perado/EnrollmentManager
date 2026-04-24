@@ -18,7 +18,7 @@ public record CreateUserRequest(
         @NotBlank
         String name,
 
-        @Schema(description = "회원 역할", example = "STUDENT")
+        @Schema(description = "회원 역할", example = "INSTRUCTOR")
         @NotNull
         UserRole role
 
