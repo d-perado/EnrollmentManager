@@ -74,7 +74,7 @@ class CourseServiceTest {
 
         assertThatThrownBy(() -> courseService.createCourse(request))
                 .isInstanceOf(BusinessException.class)
-                .hasMessage(ErrorCode.INVALID_USER_ROLE.getMessage());
+                .hasMessage("강사만 강의를 생성할 수 있습니다.");
     }
 
     @Test
