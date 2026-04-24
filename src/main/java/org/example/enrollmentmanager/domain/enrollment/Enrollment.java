@@ -44,10 +44,14 @@ public class Enrollment {
     // ===== 비즈니스 로직 =====
 
     public static Enrollment create(User user, Course course) {
+        EnrollmentStatus initialStatus = course.isFull()
+                ? EnrollmentStatus.WAITLIST
+                : EnrollmentStatus.PENDING;
+
         return Enrollment.builder()
                 .user(user)
                 .course(course)
-                .status(EnrollmentStatus.PENDING)
+                .status(initialStatus)
                 .createdAt(LocalDateTime.now())
                 .build();
     }
@@ -63,6 +67,15 @@ public class Enrollment {
 
         this.status = EnrollmentStatus.CONFIRMED;
         this.confirmedAt = LocalDateTime.now();
+    }
+
+    public void promoteToPending() {
+        if (this.status != EnrollmentStatus.WAITLIST) {
+            throw new BusinessException(ErrorCode.INVALID_ENROLLMENT_STATUS);
+        }
+
+        this.status = EnrollmentStatus.PENDING;
+        this.createdAt = LocalDateTime.now();
     }
 
     public void cancel() {
