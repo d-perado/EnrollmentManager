@@ -23,7 +23,7 @@ public class CourseController {
 
     private final CourseService courseService;
 
-    @Operation(summary = "01. 강의 생성", description = "관리자가 새로운 강의를 생성합니다.")
+    @Operation(summary = "03. 강의 생성", description = "관리자가 새로운 강의를 생성합니다.")
     @PostMapping
     public ResponseEntity<ApiResponse<CourseResponse>> createCourse(
             @Valid @RequestBody CreateCourseRequest request
@@ -33,7 +33,7 @@ public class CourseController {
                 .body(ApiResponse.success(response, "강의 생성이 완료되었습니다."));
     }
 
-    @Operation(summary = "03. 강의 목록 조회", description = "강의 상태값을 기준으로 강의 목록을 조회합니다. status가 없으면 전체 강의를 조회합니다.")
+    @Operation(summary = "05. 강의 목록 조회", description = "강의 상태값을 기준으로 강의 목록을 조회합니다. status가 없으면 전체 강의를 조회합니다.")
     @GetMapping
     public ResponseEntity<ApiResponse<List<CourseResponse>>> getCourses(
             @RequestParam(required = false) CourseStatus status
@@ -42,7 +42,7 @@ public class CourseController {
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @Operation(summary = "04. 강의 단건 조회", description = "courseId를 기준으로 특정 강의 정보를 조회합니다.")
+    @Operation(summary = "06. 강의 단건 조회", description = "courseId를 기준으로 특정 강의 정보를 조회합니다.")
     @GetMapping("/{courseId}")
     public ResponseEntity<ApiResponse<CourseResponse>> getCourse(
             @PathVariable Long courseId
@@ -51,7 +51,7 @@ public class CourseController {
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @Operation(summary = "02. 강의 오픈", description = "강의 상태를 OPEN으로 변경하여 수강 신청이 가능하도록 합니다.")
+    @Operation(summary = "04. 강의 오픈", description = "강의 상태를 OPEN으로 변경하여 수강 신청이 가능하도록 합니다.")
     @PatchMapping("/{courseId}/open")
     public ResponseEntity<ApiResponse<CourseResponse>> openCourse(
             @PathVariable Long courseId
@@ -60,7 +60,7 @@ public class CourseController {
         return ResponseEntity.ok(ApiResponse.success(response, "강의 상태가 OPEN으로 변경되었습니다."));
     }
 
-    @Operation(summary = "05. 강의 마감", description = "강의 상태를 CLOSED로 변경하여 수강 신청을 마감합니다.")
+    @Operation(summary = "07. 강의 마감", description = "강의 상태를 CLOSED로 변경하여 수강 신청을 마감합니다.")
     @PatchMapping("/{courseId}/close")
     public ResponseEntity<ApiResponse<CourseResponse>> closeCourse(
             @PathVariable Long courseId
