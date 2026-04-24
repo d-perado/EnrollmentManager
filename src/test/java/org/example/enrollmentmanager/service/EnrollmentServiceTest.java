@@ -161,4 +161,48 @@ class EnrollmentServiceTest {
 
         return courseRepository.save(course);
     }
+
+    @Test
+    @DisplayName("정원이 가득 찬 강의에 신청하면 WAITLIST 상태가 된다")
+    void createEnrollment_waitlist_success() {
+        User student1 = saveUser("student1@test.com", UserRole.STUDENT);
+        User student2 = saveUser("student2@test.com", UserRole.STUDENT);
+        User instructor = saveUser("instructor@test.com", UserRole.INSTRUCTOR);
+        Course course = saveOpenCourse(instructor, 1);
+
+        EnrollmentResponse first = enrollmentService.createEnrollment(
+                new CreateEnrollmentRequest(student1.getId(), course.getId())
+        );
+        enrollmentService.confirmEnrollment(first.id());
+
+        EnrollmentResponse waitlisted = enrollmentService.createEnrollment(
+                new CreateEnrollmentRequest(student2.getId(), course.getId())
+        );
+
+        assertThat(waitlisted.status()).isEqualTo(EnrollmentStatus.WAITLIST);
+    }
+
+    @Test
+    @DisplayName("수강 취소로 자리가 생기면 가장 오래된 WAITLIST 신청이 PENDING으로 승격된다")
+    void cancelEnrollment_promoteWaitlist_success() {
+        User student1 = saveUser("student1@test.com", UserRole.STUDENT);
+        User student2 = saveUser("student2@test.com", UserRole.STUDENT);
+        User instructor = saveUser("instructor@test.com", UserRole.INSTRUCTOR);
+        Course course = saveOpenCourse(instructor, 1);
+
+        EnrollmentResponse first = enrollmentService.createEnrollment(
+                new CreateEnrollmentRequest(student1.getId(), course.getId())
+        );
+        enrollmentService.confirmEnrollment(first.id());
+
+        EnrollmentResponse waitlisted = enrollmentService.createEnrollment(
+                new CreateEnrollmentRequest(student2.getId(), course.getId())
+        );
+
+        enrollmentService.cancelEnrollment(first.id());
+
+        Enrollment promoted = enrollmentRepository.findById(waitlisted.id()).orElseThrow();
+
+        assertThat(promoted.getStatus()).isEqualTo(EnrollmentStatus.PENDING);
+    }
 }
